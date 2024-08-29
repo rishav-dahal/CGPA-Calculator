@@ -14,7 +14,7 @@ class User(AbstractUser):
         unique_filename = f"{self.email}_{self.id}.{extension}"
         return f'avatars/{unique_filename}'
     
-    avatar = models.ImageField(upload_to=generate_file_name, null=True , default='avatars.svg' blank=True)
+    avatar = models.ImageField(upload_to=generate_file_name, null=True , default='avatars.svg' , blank=True)
 
     def grade_point(self):
         grade_conversion = {
