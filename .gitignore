@@ -138,3 +138,8 @@ GitHub.sublime-settings
 .history
 
 CGPA.code-workspace
+
+
+# vendor static files
+flowbite.min.css
+flowbite.min.js
