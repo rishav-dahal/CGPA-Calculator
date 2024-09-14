@@ -3,7 +3,10 @@ from django.http import JsonResponse
 from .models import Semester, AggregateResult
 
 def home(request):
-    return render(request, 'base/home.html')
+    return render(request, 'base/home.html')\
+
+def login(request):
+    return render(request, 'base/login.html')
 
 # Test API views
 def calculate_sgpa_view(request, semester_id):
