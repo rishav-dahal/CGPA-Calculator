@@ -34,6 +34,29 @@ def loginPage(request):
     context = {'page': page}
     return render(request, 'base/login.html',context)
 
+
+def registerPage(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        password2 = request.POST.get('confirm-password')
+
+        if password != password2:
+            messages.error(request, 'Passwords do not match')
+            return redirect('register')
+        
+        try:
+            user = User.objects.create_user(email=email, password=password)
+            user.save()
+            messages.success(request, 'Account was created for ' + email)
+            return redirect('login')
+        except:
+            messages.error(request, 'An error occurred while creating the account')
+
+    return render(request, 'base/register.html')
+
+
+
 # Test API views
 def calculate_sgpa_view(request, semester_id):
     try:
