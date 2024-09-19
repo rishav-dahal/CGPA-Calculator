@@ -4,6 +4,7 @@ from .models import Semester, AggregateResult
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import User
+from django.contrib.auth import logout
 
 def home(request):
     return render(request, 'base/home.html')\
@@ -55,7 +56,9 @@ def registerPage(request):
 
     return render(request, 'base/register.html')
 
-
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
 
 # Test API views
 def calculate_sgpa_view(request, semester_id):
