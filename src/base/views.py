@@ -1,12 +1,38 @@
-from django.shortcuts import render
+from django.shortcuts import render ,redirect
 from django.http import JsonResponse
 from .models import Semester, AggregateResult
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from .models import User
 
 def home(request):
     return render(request, 'base/home.html')\
 
-def login(request):
-    return render(request, 'base/login.html')
+def loginPage(request):
+
+    page = 'login'
+    if request.user.is_authenticated: # is_authenticated is a boolean attribute that will return True if the user is authenticated
+        return redirect('home')
+    
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        try:
+            user = User.objects.get(email=email)
+        except:
+            messages.error(request, 'user does not exist') # messages.error() will display an error message in the template
+        
+        user = authenticate(request, username=email, password=password) # authenticate() will check if the user exists and if the password is correct
+
+        if user is not None:
+            login(request,user) # login() will log in the user
+            return redirect('home')
+        else:
+            messages.error(request, 'Username or Password is incorrect')
+
+    context = {'page': page}
+    return render(request, 'base/login.html',context)
 
 # Test API views
 def calculate_sgpa_view(request, semester_id):
