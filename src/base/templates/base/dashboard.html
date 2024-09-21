@@ -1,0 +1,66 @@
+{% extends "main.html" %}
+{% load static %}
+
+
+{% block content %}
+<main class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Dashboard</h1>
+
+    <div class="bg-white p-4 mb-6 rounded-lg shadow">
+        <h2 class="text-xl font-semibold">CGPA: {{ aggregate_result.cgpa }}</h2>
+    </div>
+
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 bg-gray-200">Semester</th>
+                    <th class="py-2 px-4 bg-gray-200">Subject name</th>
+                    <th class="py-2 px-4 bg-gray-200">Credit</th>
+                    <th class="py-2 px-4 bg-gray-200">Grade</th>
+                    <th class="py-2 px-4 bg-gray-200">SGPA</th>
+                    <th class="py-2 px-4 bg-gray-200">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for semester in semester_data %}
+                <tr>
+                    <td class="py-2 px-4 border-b align-top">{{ semester.semester_name }}</td>
+                    <td class="py-2 px-4 border-b">
+                        <ul>
+                            {% for subject in semester.subjects %}
+                            <li class="mb-2">
+                                <strong>{{ subject.name }}</strong>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td class="py-2 px-4 border-b">
+                        <ul>
+                            {% for subject in semester.subjects %}
+                            <li class="mb-2">
+                               {{ subject.credit }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td class="py-2 px-4 border-b">
+                        <ul>
+                            {% for subject in semester.subjects %}
+                            <li class="mb-2">
+                                {{ subject.grade }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td class="py-2 px-4 border-b align-top">{{ semester.sgpa }}</td>
+                    <td class="py-2 px-4 border-b align-top">
+                        <a href="#" class="ml-4 bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600">Add Subject</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock content %}

@@ -1,10 +1,12 @@
-from django.shortcuts import render ,redirect
+from django.shortcuts import render ,redirect , get_object_or_404
 from django.http import JsonResponse
-from .models import Semester, AggregateResult
+from .models import Semester, AggregateResult , UserSubjectGrade
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import User
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from .forms import UserSubjectGradeForm , SemesterForm
 
 def home(request):
     return render(request, 'base/home.html')\
@@ -59,6 +61,37 @@ def registerPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+
+@login_required
+def dashboard(request):
+    user = request.user
+    semesters = user.semesters.all()
+    aggregate_result, created = AggregateResult.objects.get_or_create(user=user)
+    aggregate_result.calculate_cgpa()
+
+    # Collect data for each semester, including subjects, credits, and grades
+    semester_data = []
+    for semester in semesters:
+        subjects = UserSubjectGrade.objects.filter(semester=semester)
+        subject_details = [{
+            'name': subject.subject.name,
+            'credit': subject.subject.credit,
+            'grade': subject.grade
+        } for subject in subjects]
+        semester_data.append({
+            'id': semester.id,
+            'semester_name': semester.semester_name,
+            'subjects': subject_details,
+            'sgpa': semester.sgpa
+        })
+
+    context = {
+        'user': user, # User details
+        'semester_data': semester_data, # Details of each semester
+        'aggregate_result': aggregate_result, 
+    }
+    return render(request, 'base/dashboard.html', context)
 
 # Test API views
 def calculate_sgpa_view(request, semester_id):
