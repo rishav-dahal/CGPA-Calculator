@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block content %}
+<main class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Add New Semester</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="id_semester_name" class="block text-gray-700 text-sm font-bold mb-2">Semester Name</label>
+                {{ form.semester_name }}
+            </div>
+            <button type="submit" class="bg-teal-700 text-white px-4 py-2 rounded hover:bg-teal-800">Add Semester</button>
+            <a href="{% url 'dashboard' %}" class="ml-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 inline-block">Cancel</a>
+        </form>
+    </div>
+</main>
+{% endblock content %}

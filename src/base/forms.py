@@ -36,3 +36,9 @@ class UserSubjectGradeForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+
+# Form for adding a new semester
+class SemesterForm(forms.ModelForm):
+    class Meta:
+        model = Semester
+        fields = ['semester_name']  # Only include the semester name as a field
