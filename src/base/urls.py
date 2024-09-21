@@ -7,6 +7,7 @@ urlpatterns = [
     path('register/', views.registerPage, name='register'),
     path('logout/', views.logoutUser, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('add-subject-grade/<int:semester_id>/', views.add_subject_grade, name='add_subject_grade'),
 
 
     # Test URLs

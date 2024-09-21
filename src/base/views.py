@@ -6,7 +6,7 @@ from django.contrib import messages
 from .models import User
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .forms import UserSubjectGradeForm , SemesterForm
+from .forms import UserSubjectGradeForm 
 
 def home(request):
     return render(request, 'base/home.html')\
@@ -92,6 +92,30 @@ def dashboard(request):
         'aggregate_result': aggregate_result, 
     }
     return render(request, 'base/dashboard.html', context)
+
+def add_subject_grade(request, semester_id):
+    semester = get_object_or_404(Semester, id=semester_id, user=request.user)
+
+    if request.method == 'POST':
+        form = UserSubjectGradeForm(request.POST, user=request.user)  # Pass the user
+        if form.is_valid():
+            user_subject_grade = form.save(commit=False)
+            user_subject_grade.user = request.user
+            user_subject_grade.semester = semester
+            user_subject_grade.save()
+
+            # Recalculate and update SGPA after adding a grade
+            semester.calculate_sgpa()
+
+            return redirect('dashboard')
+    else:
+        form = UserSubjectGradeForm(user=request.user)  # Pass the user here as well
+
+    context = {
+        'form': form,
+        'semester': semester
+    }
+    return render(request, 'base/addsubjectgrade.html', context)
 
 # Test API views
 def calculate_sgpa_view(request, semester_id):
