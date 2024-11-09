@@ -146,3 +146,10 @@ def calculate_cgpa_view(request, user_id):
         return JsonResponse({'message': 'CGPA calculated successfully', 'cgpa': aggregate_result.cgpa})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+    
+
+def privacypolicy(request):
+    return render(request, 'base/privacypolicy.html')
+
+def termsandconditions(request):
+    return render(request, 'base/termsandconditions.html')

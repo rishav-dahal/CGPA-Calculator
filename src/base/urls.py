@@ -9,6 +9,8 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'),
     path('add-subject-grade/<int:semester_id>/', views.add_subject_grade, name='add_subject_grade'),
     path('add-semester/', views.add_semester, name='add_semester'),
+    path('privacy-policy/', views.privacypolicy, name='privacypolicy'),
+    path('terms-and-conditions/', views.termsandconditions, name='termsandconditions'),
 
 
     # Test URLs
