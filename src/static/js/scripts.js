@@ -13,3 +13,5 @@ document.querySelectorAll('[data-modal-hide]').forEach(button => {
         if (modal) modal.classList.add('hidden');
     });
 });
+
+document.getElementById('year').textContent = new Date().getFullYear();
